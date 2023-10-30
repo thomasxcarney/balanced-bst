@@ -118,7 +118,22 @@ const tree = function createTree(arr) {
         };
     };
 
-    return { root, insert, del, find };
+    function levelOrder(func) {
+        let queue = [root];
+        for(let i = 0; i < queue.length; i++) {
+            if(queue[i].left) {
+                queue.push(queue[i].left);
+            };
+            if(queue[i].right) {
+                queue.push(queue[i].right);
+            };
+        };
+        for(let i = 0; i < queue.length; i++) {
+            func(queue[i]);
+        };
+    };
+
+    return { root, insert, del, find, levelOrder };
 };
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -139,4 +154,4 @@ let myTree = tree(arr);
 myTree.insert(25);
 myTree.del(8)
 prettyPrint(myTree.root);
-console.log(myTree.find(23));
+// console.log(myTree.find(23));
