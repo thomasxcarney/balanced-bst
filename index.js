@@ -128,12 +128,62 @@ const tree = function createTree(arr) {
                 queue.push(queue[i].right);
             };
         };
-        for(let i = 0; i < queue.length; i++) {
-            func(queue[i]);
-        };
+        if(func){
+            for(let i = 0; i < queue.length; i++) {
+                func(queue[i]);
+            };
+        } else return queue;
     };
 
-    return { root, insert, del, find, levelOrder };
+    function inorder(func) {
+        let queue = [];
+        function inorderTraversal(node) {
+            if (!node) return;
+            inorderTraversal(node.left);
+            queue.push(node);
+            inorderTraversal(node.right);
+        };
+        inorderTraversal(root);
+        if(func) {
+            for(let i = 0; i < queue.length; i++){
+                return func(queue[i]);
+            };
+        } else return queue;
+    };
+
+    function preorder(func) {
+        let queue = [];
+        function preorderTraversal(node) {
+            if (!node) return;
+            queue.push(node);
+            preorderTraversal(node.left);
+            preorderTraversal(node.right);
+        };
+        preorderTraversal(root);
+        if(func) {
+            for(let i = 0; i < queue.length; i++){
+                return func(queue[i]);
+            };
+        } else return queue;
+    };
+
+    function postorder(func) {
+        let queue = [];
+        function postTraversal(node) {
+            if (!node) return;
+            postTraversal(node.left);
+            postTraversal(node.right);
+            queue.push(node.data);
+        };
+        postTraversal(root);
+        if(func) {
+            for(let i = 0; i < queue.length; i++){
+                return func(queue[i]);
+            };
+        } else return queue;
+    };
+
+    return { root, insert, del, find, levelOrder, inorder, preorder, postorder };
 };
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -151,7 +201,8 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let myTree = tree(arr);
-myTree.insert(25);
+// myTree.insert(25);
 myTree.del(8)
 prettyPrint(myTree.root);
 // console.log(myTree.find(23));
+console.log(myTree.postorder())
