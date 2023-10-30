@@ -183,7 +183,44 @@ const tree = function createTree(arr) {
         } else return queue;
     };
 
-    return { root, insert, del, find, levelOrder, inorder, preorder, postorder };
+    function height(node) {
+        if(!node.left && !node.right) {
+            return 0;
+        } else {
+            let left = 0;
+            let current = node;
+            while(current.left) {
+                current = current.left;
+                left += 1;
+            };
+            let right = 0;
+            current = node;
+            while(current.right) {
+                current = current.right;
+                right += 1;
+            };
+            return Math.max(right, left);
+        };
+    };
+
+    function depth(node) {
+        let depth = 1;
+        function findDepth(value, current = root) {
+            if (value == current.data) {
+                return current;
+            } else if(value < current.data) {
+                depth += 1;
+                return findDepth(value, current.left);
+            } else if (value > current.data) {
+                depth +=1;
+                return findDepth(value, current.right);
+            };
+        };
+        findDepth(node.data);
+        return depth;
+    }
+
+    return { root, insert, del, find, levelOrder, inorder, preorder, postorder, height, depth };
 };
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -205,4 +242,6 @@ let myTree = tree(arr);
 myTree.del(8)
 prettyPrint(myTree.root);
 // console.log(myTree.find(23));
-console.log(myTree.postorder())
+// console.log(myTree.postorder())
+// console.log(myTree.height(myTree.find(9)))
+// console.log(myTree.depth(myTree.find(5)))
