@@ -108,7 +108,17 @@ const tree = function createTree(arr) {
         return current;
     };
 
-    return { root, insert, del };
+    function find(value, current = root) {
+        if (value == current.data) {
+            return current;
+        } else if(value < current.data) {
+            return find(value, current.left);
+        } else if (value > current.data) {
+            return find(value, current.right);
+        };
+    };
+
+    return { root, insert, del, find };
 };
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -128,4 +138,5 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let myTree = tree(arr);
 myTree.insert(25);
 myTree.del(8)
-console.log(prettyPrint(myTree.root));
+prettyPrint(myTree.root);
+console.log(myTree.find(23));
