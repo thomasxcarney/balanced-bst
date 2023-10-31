@@ -237,7 +237,18 @@ const tree = function createTree(arr) {
         return checkHeight(current) !== false;
     };
 
-    return { root, insert, del, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced };
+    function rebalance() {
+        let orderedArr = inorder();
+        let newArr = [];
+        for(let i = 0; i < orderedArr.length; i++){
+            let data = orderedArr[i].data;
+            newArr.push(data);
+        };
+        return tree(newArr);
+    };
+
+    return { root, insert, del, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, 
+    rebalance };
 };
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -255,11 +266,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let myTree = tree(arr);
-// myTree.insert(68);
+myTree.insert(68);
 myTree.del(8)
 prettyPrint(myTree.root);
 // console.log(myTree.find(23));
 // console.log(myTree.postorder())
 // console.log(myTree.height(myTree.root))
 // console.log(myTree.depth(myTree.find(5)))
-console.log(myTree.isBalanced())
+// console.log(myTree.inorder())
+let rebalanced = myTree.rebalance();
+prettyPrint(rebalanced.root);
