@@ -294,8 +294,22 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
   };
 
+const getRandomNum = function getRandomNumber(max, min){
+    return Math.floor(Math.random() * (max - min + 1)) + 1;
+};
+
+const arrGen = function arrayGenerator() {
+    let length = getRandomNum(14, 3);
+    let arr = [];
+    for(let i = 0; i < length; i++){
+        let num = getRandomNum(100, 1);
+        arr.push(num);
+    };
+    return arr;
+};
+
 const driver = function driverScript() {
-    let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+    let arr = arrGen();
     console.log('Starting Array: ' + arr)
     let myTree = tree(arr);
     console.log('isBalanced: ' + myTree.isBalanced());
@@ -303,10 +317,10 @@ const driver = function driverScript() {
     console.log('Pre Order: ' + myTree.preorder());
     console.log('Post Order: ' + myTree.postorder());
     console.log('In Order: ' + myTree.inorder());
-    myTree.insert(101);
-    myTree.insert(300);
-    myTree.insert(502);
-    console.log('Insert 101, 300, 502')
+    myTree.insert(getRandomNum(1000, 101));
+    myTree.insert(getRandomNum(1000, 101));
+    myTree.insert(getRandomNum(1000, 101));
+    console.log('Insert three random numbers')
     console.log('isBalanced: ' + myTree.isBalanced());
     myTree.rebalance();
     console.log('Rebalance');
