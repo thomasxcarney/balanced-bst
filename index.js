@@ -128,11 +128,16 @@ const tree = function createTree(arr) {
                 queue.push(queue[i].right);
             };
         };
+        let newArr = [];
+        for(let i = 0; i < queue.length; i++){
+            let data = queue[i].data;
+            newArr.push(data);
+        };
         if(func){
             for(let i = 0; i < queue.length; i++) {
                 func(queue[i]);
             };
-        } else return queue;
+        } else return newArr;
     };
 
     function inorder(func) {
@@ -144,11 +149,16 @@ const tree = function createTree(arr) {
             inorderTraversal(node.right);
         };
         inorderTraversal(root);
+        let newArr = [];
+        for(let i = 0; i < queue.length; i++){
+            let data = queue[i].data;
+            newArr.push(data);
+        };
         if(func) {
             for(let i = 0; i < queue.length; i++){
                 return func(queue[i]);
             };
-        } else return queue;
+        } else return newArr
     };
 
     function preorder(func) {
@@ -160,11 +170,16 @@ const tree = function createTree(arr) {
             preorderTraversal(node.right);
         };
         preorderTraversal(root);
+        let newArr = [];
+        for(let i = 0; i < queue.length; i++){
+            let data = queue[i].data;
+            newArr.push(data);
+        };
         if(func) {
             for(let i = 0; i < queue.length; i++){
                 return func(queue[i]);
             };
-        } else return queue;
+        } else return newArr;
     };
 
     function postorder(func) {
@@ -173,14 +188,19 @@ const tree = function createTree(arr) {
             if (!node) return;
             postTraversal(node.left);
             postTraversal(node.right);
-            queue.push(node.data);
+            queue.push(node);
         };
         postTraversal(root);
+        let newArr = [];
+        for(let i = 0; i < queue.length; i++){
+            let data = queue[i].data;
+            newArr.push(data);
+        };
         if(func) {
             for(let i = 0; i < queue.length; i++){
                 return func(queue[i]);
             };
-        } else return queue;
+        } else return newArr;
     };
 
     function height(node) {
@@ -227,7 +247,6 @@ const tree = function createTree(arr) {
         
             const left = checkHeight(node.left);
             const right = checkHeight(node.right);
-        
             if (left === false || right === false || Math.abs(left - right) > 1) {
                 return false;
             };
@@ -238,13 +257,24 @@ const tree = function createTree(arr) {
     };
 
     function rebalance() {
-        let orderedArr = inorder();
+        function inOrder(){
+            let queue = [];
+            function inorderTraversal(node) {
+                if (!node) return;
+                inorderTraversal(node.left);
+                queue.push(node);
+                inorderTraversal(node.right);
+            };
+            inorderTraversal(root);
+            return queue;
+        };
+        let orderedArr = inOrder();
         let newArr = [];
         for(let i = 0; i < orderedArr.length; i++){
             let data = orderedArr[i].data;
             newArr.push(data);
         };
-        return tree(newArr);
+        root = buildTree(newArr);
     };
 
     return { root, insert, del, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, 
@@ -264,15 +294,27 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
   };
 
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-let myTree = tree(arr);
-myTree.insert(68);
-myTree.del(8)
-prettyPrint(myTree.root);
-// console.log(myTree.find(23));
-// console.log(myTree.postorder())
-// console.log(myTree.height(myTree.root))
-// console.log(myTree.depth(myTree.find(5)))
-// console.log(myTree.inorder())
-let rebalanced = myTree.rebalance();
-prettyPrint(rebalanced.root);
+const driver = function driverScript() {
+    let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+    console.log('Starting Array: ' + arr)
+    let myTree = tree(arr);
+    console.log('isBalanced: ' + myTree.isBalanced());
+    console.log('Level Order: ' + myTree.levelOrder());
+    console.log('Pre Order: ' + myTree.preorder());
+    console.log('Post Order: ' + myTree.postorder());
+    console.log('In Order: ' + myTree.inorder());
+    myTree.insert(101);
+    myTree.insert(300);
+    myTree.insert(502);
+    console.log('Insert 101, 300, 502')
+    console.log('isBalanced: ' + myTree.isBalanced());
+    myTree.rebalance();
+    console.log('Rebalance');
+    console.log('isBalanced: ' + myTree.isBalanced());
+    console.log('Level Order: ' + myTree.levelOrder());
+    console.log('Pre Order: ' + myTree.preorder());
+    console.log('Post Order: ' + myTree.postorder());
+    console.log('In Order: ' + myTree.inorder());
+};
+
+driver();
